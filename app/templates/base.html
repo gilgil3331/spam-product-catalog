@@ -7,7 +7,7 @@
     <title>{% block title %}Product Catalog{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     {% if recaptcha_enabled %}
-    <script src="https://www.google.com/recaptcha/api.js" nonce="{{ csp_nonce() }}" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}" nonce="{{ csp_nonce() }}" async defer></script>
     <script src="{{ url_for('static', filename='js/recaptcha.js') }}" nonce="{{ csp_nonce() }}" defer></script>
     {% endif %}
 </head>

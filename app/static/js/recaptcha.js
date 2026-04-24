@@ -26,12 +26,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             grecaptcha.ready(function () {
-                grecaptcha.execute(siteKey, { action: action }).then(function (token) {
-                    f.querySelector('[name="g-recaptcha-response"]').value = token;
+                try {
+                    grecaptcha.execute(siteKey, { action: action }).then(function (token) {
+                        f.querySelector('[name="g-recaptcha-response"]').value = token;
+                        f.submit();
+                    }).catch(function () {
+                        if (btn) btn.disabled = false;
+                        f.submit();
+                    });
+                } catch (err) {
+                    // execute() threw synchronously (e.g. key not registered) — unblock the form
+                    if (btn) btn.disabled = false;
                     f.submit();
-                }).catch(function () {
-                    f.submit(); // server-side check will reject the empty token
-                });
+                }
             });
         }
 
