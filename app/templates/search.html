@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Search Products — Product Catalog{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Search Products</h1>
+    <form method="GET" action="{{ url_for('products.search') }}" class="search-form">
+        <div class="field field-inline">
+            <input type="text" name="q" value="{{ query | e }}"
+                   placeholder="Search by name…" maxlength="100"
+                   pattern="[A-Za-z0-9 ]+" title="Letters, digits, and spaces only">
+            <button type="submit" class="btn">Search</button>
+        </div>
+    </form>
+
+    {% if results %}
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in results %}
+            <tr>
+                <td>{{ product.name | e }}</td>
+                <td>${{ "%.2f" | format(product.price | float) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% elif query %}
+    <p class="no-results">No products found for "{{ query | e }}".</p>
+    {% endif %}
+</div>
+{% endblock %}

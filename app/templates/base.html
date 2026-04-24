@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}Product Catalog{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% if recaptcha_enabled %}
+    <script src="https://www.google.com/recaptcha/api.js" nonce="{{ csp_nonce() }}" async defer></script>
+    <script src="{{ url_for('static', filename='js/recaptcha.js') }}" nonce="{{ csp_nonce() }}" defer></script>
+    {% endif %}
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <span class="brand">Product Catalog</span>
+            {% if session.get('logged_in') %}
+            <div class="nav-links">
+                <a href="{{ url_for('products.add_product') }}" class="nav-link">Add Product</a>
+                <a href="{{ url_for('products.search') }}" class="nav-link">Search Product</a>
+                <form method="POST" action="{{ url_for('auth.logout') }}" class="logout-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+            <div></div>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

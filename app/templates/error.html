@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Error {{ code }} — Product Catalog{% endblock %}
+
+{% block content %}
+<div class="card card-error">
+    <h1>Error {{ code }}</h1>
+    <p>{{ message }}</p>
+    <a href="{{ url_for('auth.login') }}" class="btn">Go Home</a>
+</div>
+{% endblock %}

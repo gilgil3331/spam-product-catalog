@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Add Product — Product Catalog{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Add Product</h1>
+    <form method="POST" action="{{ url_for('products.add_product') }}" id="addForm"
+          data-sitekey="{{ site_key }}" data-recaptcha-action="add_product">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="g-recaptcha-response"{% if not recaptcha_enabled %} value="dev-bypass"{% endif %}>
+
+        <div class="field">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" name="name" required
+                   maxlength="100" placeholder="Letters, digits, and spaces only"
+                   pattern="[A-Za-z0-9 ]+" title="Letters, digits, and spaces only">
+        </div>
+
+        <div class="field">
+            <label for="price">Price ($)</label>
+            <input type="number" id="price" name="price" required
+                   step="0.01" min="0.01" max="999999.99" placeholder="0.00">
+        </div>
+
+        <button type="submit" class="btn">Add Product</button>
+    </form>
+</div>
+{% endblock %}
