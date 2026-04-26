@@ -14,7 +14,7 @@ _DUMMY_HASH = b"$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBpj2VjNBi3yIi"
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
-@limiter.limit("5 per minute")  # auto-lockout with timed release (DOS-1)
+@limiter.limit("15 per minute")
 def login():
     if session.get("logged_in"):
         return redirect(url_for("products.add_product"))
